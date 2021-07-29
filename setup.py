@@ -4,7 +4,6 @@
 
 from os import path
 
-import pypandoc
 import setuptools
 from setuptools import find_packages
 from setuptools import setup
@@ -14,10 +13,14 @@ assert version > 30, "requires setuptools > 30"
 
 this_directory = path.abspath(path.dirname(__file__))
 
-long_description = pypandoc.convert(path.join(this_directory, 'README.md'), 'rst')
+try:
+    import pypandoc
+    long_description = pypandoc.convert_file(path.join(this_directory, 'README.md'), 'rst')
+except ModuleNotFoundError:
+    long_description = ''
 
 
-__version__ = '0.0.4'
+__version__ = '0.1.0'
 
 
 setup(
