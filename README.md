@@ -5,15 +5,11 @@
 
 ## Install
 
-```
-pip install --upgrade git+https://github.com/ericxsun/ml-dataloader.git
-
-# or pip install ml-dataloader
-```
+`pip install ml-dataloader`
 
 ## Examples
 
-1. suppose data store in python list
+- suppose data store in python list
 
 ```python
 from dataloader.dataset import Dataset, DataKind
@@ -22,9 +18,9 @@ from dataloader.pipeline import MapDataProcessKind
 
 data = list(range(10))
 kind = DataKind.MEM_SEQ
-dataset = Dataset(data, kind, shuffle=False)
+dataset = Dataset(data, kind)
 
-dl = DataLoader(dataset, batch_size=2, processor_kind=MapDataProcessKind.NORMAL)
+dl = DataLoader(dataset, batch_size=2, shuffle=False, processor_kind=MapDataProcessKind.NORMAL)
 for batch in dl:
     print(batch)
 
@@ -35,7 +31,7 @@ for batch in dl:
 # tf.Tensor([8 9], shape=(2,), dtype=int32)
 ```
 
-2. suppose `train.tsv` storing the data
+- suppose `train.tsv` storing the data
 
 ```python
 from dataloader.dataset import Dataset, DataKind
@@ -44,16 +40,18 @@ from dataloader.pipeline import MapDataProcessKind
 
 filename = 'train.tsv'
 kind = DataKind.FILE
-dataset = Dataset(filename, kind, shuffle=False)
+dataset = Dataset(filename, kind)
 
-dl = DataLoader(dataset, batch_size=2, processor_kind=MapDataProcessKind.MULTI_PROCESS, num_procs=20)
+dl = DataLoader(dataset, batch_size=2, shuffle=True, processor_kind=MapDataProcessKind.MULTI_PROCESS, num_procs=20)
 for batch in dl:
     print(batch)
 ```
 
 **NOTES**:
 
-1. the fully supported parameters, pls ref to [DataLoader](./dataloader/dataloader.py) definition
+1. the fully supported parameters, pls ref to [DataLoader](https://github.com/ericxsun/ml-dataloader/blob/main/dataloader/dataloader.py) definition
+2. with [MultiThreadMapData/MultiProcessMapDataZMQ](https://github.com/ericxsun/ml-dataloader/blob/main/dataloader/pipeline/processor.py), the order won't be kept as defined in dataset
+3. in order to keep order as defined in `Dataset`, [MapData](https://github.com/ericxsun/ml-dataloader/blob/main/dataloader/pipeline/processor.py) can be used, but it could be slow compare with MultiThreadMapData and MultiProcessMapDataZMQ. Another way, process the data with [pool_transform](https://github.com/ericxsun/ml-dataloader/blob/main/dataloader/transform/misc.py), then pass the processed data as `DataKind.MEM_SEQ` kind into `Dataset`, i.e., `dataset = Dataset(processed, DataKind.MEM_SEQ)`, and avoid using `MultiThreadMapData/MultiProcessMapDataZMQ` 
 
 ## Refs:
 

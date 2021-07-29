@@ -3,19 +3,21 @@
 #
 
 from os import path
+
+import pypandoc
 import setuptools
-from setuptools import setup, find_packages
+from setuptools import find_packages
+from setuptools import setup
 
 version = int(setuptools.__version__.split('.')[0])
 assert version > 30, "requires setuptools > 30"
 
 this_directory = path.abspath(path.dirname(__file__))
 
-with open(path.join(this_directory, 'README.md'), 'rb') as f:
-    long_description = f.read().decode('utf-8')
+long_description = pypandoc.convert(path.join(this_directory, 'README.md'), 'rst')
 
 
-__version__ = '0.0.2'
+__version__ = '0.0.4'
 
 
 setup(
@@ -23,8 +25,8 @@ setup(
     url="https://github.com/ericxsun/ml-dataloader.git",
     keywords="machine learning, deep learning, neural network, data processing",
     version=__version__,
-    # long_description=long_description,
-    # long_description_content_type='text/markdown',
+    long_description=long_description,
+    long_description_content_type='text/markdown',
     packages=find_packages(exclude=["examples", "tests"]),
     zip_safe=False,
     install_requires=[
