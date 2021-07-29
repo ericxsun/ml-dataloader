@@ -23,7 +23,8 @@ setup(
     url="https://github.com/ericxsun/ml-dataloader.git",
     keywords="machine learning, deep learning, neural network, data processing",
     version=__version__,
-    long_description=long_description,
+    # long_description=long_description,
+    # long_description_content_type='text/markdown',
     packages=find_packages(exclude=["examples", "tests"]),
     zip_safe=False,
     install_requires=[
