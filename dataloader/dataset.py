@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 
+from copy import copy
 import multiprocessing
 import os
 
@@ -10,7 +11,7 @@ from dataloader.pipeline.datapipe import RandomDataPipe
 from dataloader.util import get_rng
 from dataloader.util.misc import bytes_to_str
 
-__all__ = ['DataKind', 'Dataset']
+__all__ = ['DataKind', 'Dataset', 'shuffle_dataset']
 
 
 class DataKind:
@@ -21,13 +22,12 @@ class DataKind:
 class Dataset(RandomDataPipe):
     data_kinds = {DataKind.FILE, DataKind.MEM_SEQ}
 
-    def __init__(self, data, kind=DataKind.MEM_SEQ, shuffle=False):
+    def __init__(self, data, kind=DataKind.MEM_SEQ):
         """
 
         Args:
             data: list of data if kind = DataKind.MEM_SEQ, else the filename storing data
             kind: @see DataKind
-            shuffle: shuffle data or not, default False
         """
         self.kind = kind
         if kind not in self.data_kinds:
@@ -36,11 +36,7 @@ class Dataset(RandomDataPipe):
         self.meta = {'offset': []}
         self.n_data = 0
 
-        print(id(self))
-
-        self._local_rng = None
-        if shuffle:
-            self._local_rng = get_rng(self)
+        self._local_rng = get_rng(self)
 
         if self.kind == DataKind.MEM_SEQ:
             if not isinstance(data, list):
@@ -69,12 +65,17 @@ class Dataset(RandomDataPipe):
             self.fd = open(data, 'rb', buffering=0)
             self.lock = multiprocessing.Lock()
 
-        indices = list(range(self.n_data))
-        if shuffle:
-            self._local_rng.shuffle(indices)
-        self._iter_idx = iter(indices)
+        self.indices = list(range(self.n_data))
+        self._iter_idx = iter(self.indices)
 
         self._idx = -1
+
+    def shuffle(self):
+        indices = list(range(self.n_data))
+        self._local_rng.shuffle(indices)
+        self._iter_idx = iter(indices)
+
+        return self
 
     def __len__(self) -> int:
         return self.n_data
@@ -109,3 +110,12 @@ class Dataset(RandomDataPipe):
                 raise e
 
         return data
+
+
+def shuffle_dataset(dataset, shuffle):
+    if not shuffle:
+        return dataset
+
+    dataset = copy(dataset)
+    dataset.shuffle()
+    return dataset

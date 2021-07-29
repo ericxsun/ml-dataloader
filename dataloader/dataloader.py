@@ -6,6 +6,7 @@ from typing import Callable
 from typing import Optional
 
 from dataloader.dataset import Dataset
+from dataloader.dataset import shuffle_dataset
 from dataloader.pipeline import Batch
 from dataloader.pipeline import MapData
 from dataloader.pipeline import MapDataProcessKind
@@ -20,7 +21,7 @@ __all__ = ['DataLoader']
 
 class DataLoader:
     def __init__(
-        self, dataset: Dataset, batch_size, drop_last=False,
+        self, dataset: Dataset, batch_size, shuffle=False, drop_last=False,
         repeat_in_batch_kind='no', repeat_in_batch_time=0,
         transform: Optional[Callable] = None,
         to_tensor_func: Optional[Callable] = None,
@@ -33,6 +34,7 @@ class DataLoader:
         Args:
             dataset: @see Dataset
             batch_size:
+            shuffle: shuffle data
             drop_last: drop last batch or not if len(last_batch) < batch_size, default False
             repeat_in_batch_kind: repeat kind, @see RepeatInBatch
             repeat_in_batch_time: repeat times, @see RepeatInBatch
@@ -44,6 +46,8 @@ class DataLoader:
             transform: callable for transforming raw data to features
             to_tensor_func: callable for mapping features to tensor, default to_tf_tensor (@see to_tensor.to_tf_tensor)
         """
+        dataset = shuffle_dataset(dataset, shuffle)
+
         if transform is None:
             transform = lambda e: e
 

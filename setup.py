@@ -11,7 +11,11 @@ assert version > 30, "requires setuptools > 30"
 
 this_directory = path.abspath(path.dirname(__file__))
 
-__version__ = '0.0.1'
+with open(path.join(this_directory, 'README.md'), 'rb') as f:
+    long_description = f.read().decode('utf-8')
+
+
+__version__ = '0.0.2'
 
 
 setup(
@@ -19,6 +23,7 @@ setup(
     url="https://github.com/ericxsun/ml-dataloader.git",
     keywords="machine learning, deep learning, neural network, data processing",
     version=__version__,
+    long_description=long_description,
     packages=find_packages(exclude=["examples", "tests"]),
     zip_safe=False,
     install_requires=[
