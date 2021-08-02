@@ -7,14 +7,19 @@
 
 `pip install ml-dataloader`
 
-## Examples
+
+## Examples (similar to Pytorch-dataloader)
+
+
+## Examples with Pipeline (which similar to Tensorpack-dataflow)
 
 - suppose data store in python list
 
 ```python
-from dataloader.dataset import Dataset, DataKind
-from dataloader.dataloader import DataLoader
-from dataloader.pipeline import MapDataProcessKind
+from dataloader.pipeline.dataset import Dataset
+from dataloader.pipeline.dataloader import DataLoader
+from dataloader.pipeline.processor import MapDataProcessKind
+from dataloader.util.datakind import DataKind
 
 data = list(range(10))
 kind = DataKind.MEM_SEQ
@@ -34,9 +39,10 @@ for batch in dl:
 - suppose `train.tsv` storing the data
 
 ```python
-from dataloader.dataset import Dataset, DataKind
-from dataloader.dataloader import DataLoader
-from dataloader.pipeline import MapDataProcessKind
+from dataloader.pipeline.dataset import Dataset
+from dataloader.pipeline.dataloader import DataLoader
+from dataloader.pipeline.processor import MapDataProcessKind
+from dataloader.util.datakind import DataKind
 
 filename = 'train.tsv'
 kind = DataKind.FILE

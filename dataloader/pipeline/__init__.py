@@ -3,7 +3,8 @@
 #
 
 from dataloader.pipeline.batch import Batch
-from dataloader.pipeline.batch import RepeatInBatch
+from dataloader.pipeline.dataloader import DataLoader
+from dataloader.pipeline.dataset import Dataset
 from dataloader.pipeline.processor import MapData
 from dataloader.pipeline.processor import MapDataProcessKind
 from dataloader.pipeline.processor import MultiProcessMapDataZMQ
