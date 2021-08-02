@@ -8,7 +8,7 @@ from typing import Union
 
 import numpy as np
 
-from dataloader.io import Reader
+from dataloader.io.reader import Reader
 from dataloader.util.misc import to_tuple
 
 

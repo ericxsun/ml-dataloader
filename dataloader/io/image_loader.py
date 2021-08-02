@@ -10,7 +10,7 @@ from typing import Union
 import numpy as np
 
 from dataloader.io.loader import Loader
-from dataloader.io.loader import Reader
+from dataloader.io.reader import Reader
 from dataloader.transform import DictTransform
 
 

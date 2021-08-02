@@ -33,7 +33,7 @@ class Loader(Transform):
             if reader not in reader_registry:
                 raise ValueError(f'unsupported reader type: {reader}, available options: {reader_registry}')
 
-            self.reader = reader_registry[reader](*args, **kwargs)
+            self._reader = reader_registry[reader](*args, **kwargs)
 
         self.dtype = dtype
 

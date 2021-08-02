@@ -24,13 +24,13 @@ from dataloader.util.misc import to_tuple
 
 
 def apply_transform(transform: Callable, data):
-    try:
-        if isinstance(data, (list, tuple)):
-            return [transform(item) for item in data]
+    if transform is None:
+        return data
 
-        return transform(data)
-    except Exception as e:
-        raise RuntimeError(f'applying transform {transform}: {e}')
+    if isinstance(data, (list, tuple)):
+        return [transform(item) for item in data]
+
+    return transform(data)
 
 
 class Transform:

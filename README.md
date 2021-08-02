@@ -10,8 +10,50 @@
 
 ## Examples (similar to Pytorch-dataloader)
 
+- suppose data store in python list
 
-## Examples with Pipeline (which similar to Tensorpack-dataflow)
+```python
+from dataloader.dataset import Dataset
+from dataloader.dataloader import DataLoader
+from dataloader.util.data_kind import DataKind
+
+data = list(range(10))
+kind = DataKind.MEM_SEQ
+dataset = Dataset(data, kind)
+
+dl = DataLoader(dataset, batch_size=2, shuffle=False)
+for batch in dl:
+    print(batch)
+
+# tf.Tensor([0 1], shape=(2,), dtype=int32)
+# tf.Tensor([2 3], shape=(2,), dtype=int32)
+# tf.Tensor([4 5], shape=(2,), dtype=int32)
+# tf.Tensor([6 7], shape=(2,), dtype=int32)
+# tf.Tensor([8 9], shape=(2,), dtype=int32)
+```
+
+- suppose `train.tsv` storing the data
+
+```python
+from dataloader.dataset import Dataset
+from dataloader.dataloader import DataLoader
+from dataloader.util.data_kind import DataKind
+
+filename = 'train.tsv'
+kind = DataKind.FILE
+dataset = Dataset(filename, kind)
+
+dl = DataLoader(dataset, batch_size=2, shuffle=True)
+for batch in dl:
+    print(batch)
+```
+
+**NOTES**:
+
+- if transform is slow, the dataloader will be stuck while num_workers > 0
+
+
+## Examples with Pipeline (similar to Tensorpack-dataflow)
 
 - suppose data store in python list
 
@@ -19,7 +61,7 @@
 from dataloader.pipeline.dataset import Dataset
 from dataloader.pipeline.dataloader import DataLoader
 from dataloader.pipeline.processor import MapDataProcessKind
-from dataloader.util.datakind import DataKind
+from dataloader.util.data_kind import DataKind
 
 data = list(range(10))
 kind = DataKind.MEM_SEQ
@@ -42,7 +84,7 @@ for batch in dl:
 from dataloader.pipeline.dataset import Dataset
 from dataloader.pipeline.dataloader import DataLoader
 from dataloader.pipeline.processor import MapDataProcessKind
-from dataloader.util.datakind import DataKind
+from dataloader.util.data_kind import DataKind
 
 filename = 'train.tsv'
 kind = DataKind.FILE
@@ -62,6 +104,7 @@ for batch in dl:
 ## Refs:
 
 - [pytorch-data](https://github.com/pytorch/pytorch/tree/master/torch/utils/data)
+- [MONAI](https://github.com/Project-MONAI/MONAI)
 - [tensorpack-dataflow](https://github.com/tensorpack/dataflow)
 - [performance-tuning](https://github.com/tensorpack/tensorpack/blob/master/docs/tutorial/performance-tuning.md)
 - [tensorpack-benchmark](https://github.com/tensorpack/benchmarks/blob/master/ResNet-Horovod/imagenet-resnet-horovod.py)

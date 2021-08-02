@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 
-import multiprocessing
+import multiprocess as multiprocessing
 
 from dataloader.transform import apply_transform
 
