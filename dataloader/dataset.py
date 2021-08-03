@@ -111,7 +111,7 @@ class IterableDataset(_BaseIterableDataset):
         data = iter(self.data)
 
         for d in data:
-            d = apply_transform(self.transform, d) if self.transform is not None else d
+            d = apply_transform(self.transform, d)
             yield d
 
 
@@ -192,6 +192,6 @@ class Dataset(BaseDataset):
                 logger.error(f'decode failed: index={index}, offset={self.meta["offset"][index]}, line={line}')
                 raise e
 
-        data = apply_transform(self.transform, data) if self.transform is not None else data
+        data = apply_transform(self.transform, data)
 
         return data
