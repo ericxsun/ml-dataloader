@@ -53,7 +53,7 @@ def to_tf_tensor(batch):
         return {key: to_tf_tensor([d[key] for d in batch]) for key in elem}
 
     if isinstance(elem, tuple):
-        return elem_type([to_tf_tensor(samples) for samples in zip(*batch)])
+        return elem_type(to_tf_tensor(samples) for samples in zip(*batch))
 
     if isinstance(elem, collections.abc.Sequence):
         return tf.convert_to_tensor(batch)

@@ -6,7 +6,6 @@ import errno
 import itertools
 import queue
 import tempfile
-import time
 from typing import Any
 from typing import Callable
 from typing import Generic
@@ -19,7 +18,8 @@ import multiprocess as multiprocessing  # when use multiprocessing, file descrip
 import numpy as np
 import tensorflow as tf
 
-from dataloader import logger, util
+from dataloader import logger
+from dataloader import util
 from dataloader.dataset import BaseDataset
 from dataloader.dataset import Dataset
 from dataloader.dataset import IterableDataset
@@ -35,7 +35,6 @@ from dataloader.util.batch import RepeatInBatch
 from dataloader.util.dataset_kind import DatasetKind
 from dataloader.util.misc import ExceptionWrapper
 from dataloader.util.misc import set_rnd
-from dataloader.util.serialize import deserialize
 
 __all__ = ['DataLoader']
 
@@ -220,11 +219,6 @@ class _BaseDataLoaderIter:
     def __next__(self) -> Any:
         data = self._next_data()
 
-        if self._is_batch:
-            data = self._repeat.repeat(data)
-
-        data = self._fn_to_tensor(data)
-
         self._num_yielded += 1
 
         return data
@@ -238,7 +232,8 @@ class _SingleProcessDataLoaderIter(_BaseDataLoaderIter):
         super().__init__(loader)
 
         self._dataset_fetcher = DatasetKind.create_fetcher(
-            self._dataset_kind, self._dataset, self._is_batch, self._drop_last, loader.transform
+            self._dataset_kind,
+            self._dataset, self._is_batch, self._drop_last, self._fn_to_tensor, loader.transform, loader.repeat_in_batch
         )
 
     def _next_data(self):
@@ -296,7 +291,9 @@ class _MultiProcessingDataLoaderIter(_BaseDataLoaderIter):
             w = multiprocessing_context.Process(
                 target=worker.worker_loop,
                 args=(
-                    self._dataset_kind, self._dataset, self._is_batch, self._drop_last, loader.transform,
+                    self._dataset_kind,
+                    self._dataset, self._is_batch, self._drop_last, self._fn_to_tensor,
+                    loader.transform, loader.repeat_in_batch,
                     index_queue, self._worker_result_queue, self._workers_done_event,
                     self._base_seed, self._fn_worker_init, worker_id, self._num_workers,
                 )
@@ -465,7 +462,7 @@ class _MultiProcessingDataLoaderIter(_BaseDataLoaderIter):
         if isinstance(data, ExceptionWrapper):
             data.re_raise()
 
-        data = deserialize(data)
+        # data = deserialize(data)
 
         return data
 

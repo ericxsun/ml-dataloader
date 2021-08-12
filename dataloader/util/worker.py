@@ -11,7 +11,6 @@ from dataloader import logger
 from dataloader.util import MP_STATUS_CHECK_INTERVAL
 from dataloader.util.dataset_kind import DatasetKind
 from dataloader.util.misc import ExceptionWrapper
-from dataloader.util.serialize import serialize
 
 
 class ManagerWatchdog:
@@ -78,7 +77,8 @@ class ResumeIteration(object):
 
 
 def worker_loop(
-    dataset_kind, dataset, is_batch, drop_last, transform,
+    dataset_kind,
+    dataset, is_batch, drop_last, fn_to_tensor, transform, repeat_in_batch,
     index_queue, data_queue, done_event,
     base_seed, init_fn, worker_id, num_workers
 ):
@@ -97,7 +97,9 @@ def worker_loop(
             if init_fn is not None:
                 init_fn(worker_id)
 
-            fetcher = DatasetKind.create_fetcher(dataset_kind, dataset, is_batch, drop_last, transform)
+            fetcher = DatasetKind.create_fetcher(
+                dataset_kind, dataset, is_batch, drop_last, fn_to_tensor, transform, repeat_in_batch
+            )
         except Exception as e:
             logger.error(f'init_fn or create_fetcher failed: {e} for worker: {worker_id}')
             init_exception = ExceptionWrapper(
@@ -119,7 +121,9 @@ def worker_loop(
                 data_queue.put((r, None))
                 iteration_end = False
                 # Recreate the fetcher for worker-reuse policy
-                fetcher = DatasetKind.create_fetcher(dataset_kind, dataset, is_batch, drop_last, transform)
+                fetcher = DatasetKind.create_fetcher(
+                    dataset_kind, dataset, is_batch, drop_last, fn_to_tensor, transform, repeat_in_batch
+                )
 
                 continue
 
@@ -142,11 +146,11 @@ def worker_loop(
             else:
                 try:
                     data = fetcher.fetch(index)
-                    data = serialize(data)
+                    # data = serialize(data)
                 except Exception as e:
                     if isinstance(e, StopIteration) and dataset_kind == DatasetKind.Iterable:
                         data = IterableDatasetStopIteration(worker_id)
-                        data = serialize(data)
+                        # data = serialize(data)
                         # Set `iteration_end`
                         # 1. to save future `next(...)` calls, and
                         # 2. to avoid sending multiple `IterableDatasetStopIteration`s.
