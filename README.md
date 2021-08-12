@@ -108,3 +108,9 @@ for batch in dl:
 - [tensorpack-dataflow](https://github.com/tensorpack/dataflow)
 - [performance-tuning](https://github.com/tensorpack/tensorpack/blob/master/docs/tutorial/performance-tuning.md)
 - [tensorpack-benchmark](https://github.com/tensorpack/benchmarks/blob/master/ResNet-Horovod/imagenet-resnet-horovod.py)
+
+## FAQ
+
+1 出现 `[__NSPlaceholderDate initialize] may have been in progress in another thread when fork()` 如何解决?
+
+  通常只在 Mac 上出现, `export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES` 即可
