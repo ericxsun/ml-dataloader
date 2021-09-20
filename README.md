@@ -18,8 +18,7 @@ from dataloader.dataloader import DataLoader
 from dataloader.util.data_kind import DataKind
 
 data = list(range(10))
-kind = DataKind.MEM_SEQ
-dataset = Dataset(data, kind)
+dataset = Dataset(data, kind=DataKind.MEM_SEQ)
 
 dl = DataLoader(dataset, batch_size=2, shuffle=False)
 for batch in dl:
@@ -40,8 +39,23 @@ from dataloader.dataloader import DataLoader
 from dataloader.util.data_kind import DataKind
 
 filename = 'train.tsv'
-kind = DataKind.FILE
-dataset = Dataset(filename, kind)
+dataset = Dataset(filename, kind=DataKind.FILE)
+
+dl = DataLoader(dataset, batch_size=2, shuffle=True)
+for batch in dl:
+    print(batch)
+```
+
+- suppose `train.tsv` storing the data and using `mmap`
+
+```python
+from dataloader.dataset import Dataset
+from dataloader.dataloader import DataLoader
+from dataloader.util.data_kind import DataKind
+
+filename = 'train.tsv'
+
+dataset = Dataset(filename, kind=DataKind.MMAP_FILE)
 
 dl = DataLoader(dataset, batch_size=2, shuffle=True)
 for batch in dl:
@@ -64,8 +78,7 @@ from dataloader.pipeline.processor import MapDataProcessKind
 from dataloader.util.data_kind import DataKind
 
 data = list(range(10))
-kind = DataKind.MEM_SEQ
-dataset = Dataset(data, kind)
+dataset = Dataset(data, kind=DataKind.MEM_SEQ)
 
 dl = DataLoader(dataset, batch_size=2, shuffle=False, processor_kind=MapDataProcessKind.NORMAL)
 for batch in dl:
@@ -87,8 +100,24 @@ from dataloader.pipeline.processor import MapDataProcessKind
 from dataloader.util.data_kind import DataKind
 
 filename = 'train.tsv'
-kind = DataKind.FILE
-dataset = Dataset(filename, kind)
+dataset = Dataset(filename, kind=DataKind.FILE)
+
+dl = DataLoader(dataset, batch_size=2, shuffle=True, processor_kind=MapDataProcessKind.MULTI_PROCESS, num_procs=20)
+for batch in dl:
+    print(batch)
+```
+
+- suppose `train.tsv` storing the data and using `mmap`
+
+```python
+from dataloader.pipeline.dataset import Dataset
+from dataloader.pipeline.dataloader import DataLoader
+from dataloader.pipeline.processor import MapDataProcessKind
+from dataloader.util.data_kind import DataKind
+
+filename = 'train.tsv'
+
+dataset = Dataset(filename, kind=DataKind.MMAP_FILE)
 
 dl = DataLoader(dataset, batch_size=2, shuffle=True, processor_kind=MapDataProcessKind.MULTI_PROCESS, num_procs=20)
 for batch in dl:
