@@ -92,3 +92,18 @@ def set_rnd(obj, seed):
         seed = set_rnd(obj.__dict__[key], seed=seed)
 
     return seed
+
+
+def get_offset(filename):
+    logger.debug(f'loading offset from {filename}')
+    with open(filename, 'rb') as fd:
+        offset = [0]
+        while fd.readline():
+            offset.append(fd.tell())
+
+        offset = offset[:-1]
+
+    n_data = len(offset)
+    logger.debug(f'loading offset done: n_offset={n_data}')
+
+    return offset, n_data
