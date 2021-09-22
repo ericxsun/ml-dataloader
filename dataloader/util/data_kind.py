@@ -5,4 +5,4 @@
 class DataKind:
     FILE = 'file'  # filename
     MMAP_FILE = 'mmap_file'  # mmap file
-    MEM_SEQ = 'mem-seq'  # data list in memory
+    MEM_SEQ = 'mem_seq'  # data list in memory

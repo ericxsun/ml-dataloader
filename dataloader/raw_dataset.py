@@ -64,7 +64,7 @@ class RawDataset:
                 self.lock = multiprocessing.Lock()
                 logger.warning('with multiprocessing.Lock lead to poor speed')
             elif self.kind == DataKind.MMAP_FILE:
-                fp = os.open(self.filename, os.O_RDONLY | os.O_BINARY)
+                fp = os.open(self.filename, os.O_RDONLY)
                 self.data = mmap.mmap(fp, 0, access=mmap.ACCESS_READ)
 
                 logger.warning('with mmap lead to huge virtual memory cost')
