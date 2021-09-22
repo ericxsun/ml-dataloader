@@ -16,6 +16,7 @@ from typing import TypeVar
 
 import multiprocess as multiprocessing  # when use multiprocessing, file descriptor cannot be pickled
 import numpy as np
+from prefetch_generator import BackgroundGenerator
 import tensorflow as tf
 
 from dataloader import logger
@@ -509,11 +510,12 @@ class _MultiProcessingDataLoaderIter(_BaseDataLoaderIter):
 
 
 class DataLoader(_BaseDataLoader):
-    def __init__(self, dataset: Dataset, num_workers: int = 0, **kwargs):
+    def __init__(self, dataset: Dataset, num_workers: int = 0, background_generator=False, **kwargs):
         """
         Args:
             dataset:
             num_workers:
+            background_generator: with BackgroundGenerator (default no)
             kwargs:
                 - fn_to_tensor:
                 - fn_worker_init:
@@ -540,6 +542,8 @@ class DataLoader(_BaseDataLoader):
             )
             kwargs.update({'repeat_in_batch': RepeatInBatch('no')})
 
+        self.background_generator = background_generator
+
         super().__init__(dataset=dataset, num_workers=num_workers, **kwargs)
 
     @staticmethod
@@ -554,3 +558,9 @@ class DataLoader(_BaseDataLoader):
         worker_info = worker.get_worker_info()
 
         set_rnd(worker_info.dataset, seed=worker_info.seed)
+
+    def __iter__(self):
+        if self.background_generator:
+            return BackgroundGenerator(super().__iter__())
+
+        return super().__iter__()

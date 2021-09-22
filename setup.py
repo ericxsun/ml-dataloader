@@ -20,7 +20,7 @@ except ModuleNotFoundError:
     long_description = ''
 
 
-__version__ = '0.4.0'
+__version__ = '0.5.0'
 
 
 setup(
@@ -39,7 +39,8 @@ setup(
         'msgpack-numpy>=0.4.4.2',
         'pyzmq>=16',
         'psutil>=5',
-        'multiprocess'
+        'multiprocess',
+        'prefetch_generator'
     ],
     extras_require={
         'all: "linux" in sys_platform': ['python-prctl'],
