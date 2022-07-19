@@ -163,3 +163,13 @@ for batch in dl:
 - `[__NSPlaceholderDate initialize] may have been in progress in another thread when fork()`
 
   if one meets such error, please set `OBJC_DISABLE_INITIALIZE_FORK_SAFETY` as yes: `export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES`
+
+- publish to pypi (on mac)
+
+  ```
+  pip install pypandoc twine
+  brew install pandoc
+  
+  python setup.py sdist
+  twine upload --verbose --repository-url "https://upload.pypi.org/legacy/" -u "pypi-username" -p "pypi-password" dist/*
+  ```
