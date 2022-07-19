@@ -9,7 +9,7 @@ from typing import Union
 import numpy as np
 
 from dataloader.io.reader import Reader
-from dataloader.io.registry import reader_registry
+from dataloader.io.registry import get_reader_class
 from dataloader.transform import Transform
 
 
@@ -30,10 +30,7 @@ class Loader(Transform):
 
         if isinstance(reader, str):
             reader = reader.lower()
-            if reader not in reader_registry:
-                raise ValueError(f'unsupported reader type: {reader}, available options: {reader_registry}')
-
-            self._reader = reader_registry[reader](*args, **kwargs)
+            self._reader = get_reader_class(reader)(*args, **kwargs)
 
         self.dtype = dtype
 

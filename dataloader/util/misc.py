@@ -107,3 +107,14 @@ def get_offset(filename):
     logger.debug(f'loading offset done: n_offset={n_data}')
 
     return offset, n_data
+
+
+def get_from_registry(key: str, registry):
+    if hasattr(key, 'lower'):
+        key = key.lower()
+
+    value = registry.get(key, None)
+    if value is not None:
+        return value
+
+    raise ValueError(f'key "{key}" not supported, available options: {registry.keys()}')

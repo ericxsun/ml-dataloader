@@ -10,8 +10,10 @@ import numpy as np
 
 from dataloader.io.reader import Reader
 from dataloader.util.misc import to_tuple
+from dataloader.io.registry import register_reader
 
 
+@register_reader('reader_image_cv2')
 class Cv2ImageReader(Reader):
     def __init__(self, *args, **kwargs):
         super().__init__()
