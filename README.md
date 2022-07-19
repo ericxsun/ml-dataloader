@@ -31,6 +31,26 @@ for batch in dl:
 # tf.Tensor([8 9], shape=(2,), dtype=int32)
 ```
 
+- data with index
+```python
+from dataloader.dataset import DatasetWithIndex
+from dataloader.dataloader import DataLoader
+from dataloader.util.data_kind import DataKind
+
+data = list(range(10))
+dataset = DatasetWithIndex(data, kind=DataKind.MEM_SEQ)
+
+dl = DataLoader(dataset, batch_size=2, shuffle=False)
+for batch in dl:
+    print(batch)
+
+# (tf.Tensor([0, 1], shape=(2,), dtype=int32), tf.Tensor([0, 1], shape=(2,), dtype=int32))
+# (tf.Tensor([2, 3], shape=(2,), dtype=int32), tf.Tensor([2, 3], shape=(2,), dtype=int32))
+# (tf.Tensor([4, 5], shape=(2,), dtype=int32), tf.Tensor([4, 5], shape=(2,), dtype=int32))
+# (tf.Tensor([6, 7], shape=(2,), dtype=int32), tf.Tensor([6, 7], shape=(2,), dtype=int32))
+# (tf.Tensor([8, 9], shape=(2,), dtype=int32), tf.Tensor([8, 9], shape=(2,), dtype=int32))
+```
+
 - suppose `train.tsv` storing the data
 
 ```python
@@ -140,6 +160,6 @@ for batch in dl:
 
 ## FAQ
 
-1 出现 `[__NSPlaceholderDate initialize] may have been in progress in another thread when fork()` 如何解决?
+- `[__NSPlaceholderDate initialize] may have been in progress in another thread when fork()`
 
-  通常只在 Mac 上出现, `export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES` 即可
+  if one meets such error, please set `OBJC_DISABLE_INITIALIZE_FORK_SAFETY` as yes: `export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES`
