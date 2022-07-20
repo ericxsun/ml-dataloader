@@ -166,7 +166,7 @@ for batch in dl:
 
 - publish to pypi (on mac)
 
-  ```
+  ```shell
   pip install pypandoc twine
   brew install pandoc
   

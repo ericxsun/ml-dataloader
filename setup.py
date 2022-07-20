@@ -20,7 +20,7 @@ except ModuleNotFoundError:
     long_description = ''
 
 
-__version__ = '0.5.5'
+__version__ = '0.5.6'
 
 
 setup(

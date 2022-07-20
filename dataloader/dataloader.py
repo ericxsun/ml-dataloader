@@ -347,7 +347,6 @@ class _MultiProcessingDataLoaderIter(_BaseDataLoaderIter):
                     resume_iteration_cnt -= 1
 
         # prime the prefetch loop
-        logger.info(f'prefetch {self._prefetch_factor * self._num_workers}')
         for _ in range(self._prefetch_factor * self._num_workers):
             self._try_put_index()
 
