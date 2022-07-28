@@ -13,14 +13,11 @@ assert version > 30, 'requires setuptools > 30'
 
 this_directory = path.abspath(path.dirname(__file__))
 
-try:
-    import pypandoc
-    long_description = pypandoc.convert_file(path.join(this_directory, 'README.md'), 'rst')
-except ModuleNotFoundError:
-    long_description = ''
+long_description = '''
+**ml-dataloader** is an **efficient** and **flexible** data loading pipeline for deep learning, written in pure Python.
+'''
 
-
-__version__ = '0.5.6'
+__version__ = '0.5.7'
 
 
 setup(

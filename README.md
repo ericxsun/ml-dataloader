@@ -31,26 +31,6 @@ for batch in dl:
 # tf.Tensor([8 9], shape=(2,), dtype=int32)
 ```
 
-- data with index
-```python
-from dataloader.dataset import DatasetWithIndex
-from dataloader.dataloader import DataLoader
-from dataloader.util.data_kind import DataKind
-
-data = list(range(10))
-dataset = DatasetWithIndex(data, kind=DataKind.MEM_SEQ)
-
-dl = DataLoader(dataset, batch_size=2, shuffle=False)
-for batch in dl:
-    print(batch)
-
-# (tf.Tensor([0, 1], shape=(2,), dtype=int32), tf.Tensor([0, 1], shape=(2,), dtype=int32))
-# (tf.Tensor([2, 3], shape=(2,), dtype=int32), tf.Tensor([2, 3], shape=(2,), dtype=int32))
-# (tf.Tensor([4, 5], shape=(2,), dtype=int32), tf.Tensor([4, 5], shape=(2,), dtype=int32))
-# (tf.Tensor([6, 7], shape=(2,), dtype=int32), tf.Tensor([6, 7], shape=(2,), dtype=int32))
-# (tf.Tensor([8, 9], shape=(2,), dtype=int32), tf.Tensor([8, 9], shape=(2,), dtype=int32))
-```
-
 - suppose `train.tsv` storing the data
 
 ```python
@@ -167,8 +147,7 @@ for batch in dl:
 - publish to pypi (on mac)
 
   ```shell
-  pip install pypandoc twine
-  brew install pandoc
+  pip install twine
   
   python setup.py sdist
   twine upload --verbose --repository-url "https://upload.pypi.org/legacy/" -u "pypi-username" -p "pypi-password" dist/*

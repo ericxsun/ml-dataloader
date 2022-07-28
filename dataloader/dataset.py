@@ -127,11 +127,3 @@ class Dataset(BaseDataset, RawDataset, ABC):
 
     def __getitem__(self, index):
         return self.get(index)
-
-
-class DatasetWithIndex(Dataset):
-    def __init__(self, data, kind=DataKind.MEM_SEQ, transform: Optional[Callable] = None):
-        super().__init__(data, kind, transform)
-
-    def __getitem__(self, index):
-        return self.get(index), index
