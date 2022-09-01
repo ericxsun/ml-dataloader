@@ -446,7 +446,7 @@ class _MultiProcessingDataLoaderIter(_BaseDataLoaderIter):
             if self._workers_status[worker_queue_idx]:
                 break
         else:
-            print('no worker active...')
+            logger.debug('no worker active...')
             return
 
         # print(f'worker_queue_idx={worker_queue_idx}, _send_idx={self._send_idx}, index={index}')
@@ -535,7 +535,7 @@ class DataLoader(_BaseDataLoader):
             kwargs.update({'fn_worker_init': self.worker_init_fn})
 
         if not isinstance(kwargs.get('repeat_in_batch', None), RepeatInBatch):
-            logger.warning(
+            logger.debug(
                 f'repeat_in_batch should be instance of DatasetRepeat, but got: {kwargs.get("repeat_in_batch", None)}. '
                 f'Default: RepeatInBatch("no") will be used'
             )

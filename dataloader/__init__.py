@@ -12,7 +12,7 @@ logging_level_registry = {
     'WARNING': logging.WARNING,
     'INFO': logging.INFO,
     'DEBUG': logging.DEBUG,
-    None: logging.INFO
+    None: logging.CRITICAL
 }
 
 LOG_FMT = '[%(levelname)1.1s %(asctime)s.%(msecs)03d %(module)s:%(lineno)d] %(message)s'
