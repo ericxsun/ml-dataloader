@@ -30,9 +30,8 @@ class RawDataset:
             transform: func for mapping raw data into feature
 
         >>> import os, mmap
-        >>> fp = open('filename', 'rb', os.O_RDONLY)
-        >>> mm = mmap.mmap(fp.fileno(), 0, access=mmap.ACCESS_READ)
-        >>> fp.close()
+        >>> fd = os.open('filename', os.O_RDONLY)
+        >>> mm = mmap.mmap(fd, 0, access=mmap.ACCESS_READ)
         >>> dataset = RawDataset(mm, DataKind.MMAP_FILE, filename='filename')
 
         Notes:

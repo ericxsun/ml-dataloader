@@ -30,10 +30,7 @@ def to_tf_tensor(batch):
     if elem_type.__module__ == 'numpy' and elem_type.__name__ != 'str_' and elem_type.__name__ != 'string_':
         if elem_type.__name__ == 'ndarray' or elem_type.__name__ == 'memmap':
             if _np_str_obj_array_pattern.search(elem.dtype.str) is not None:
-                raise TypeError(
-                    f'default_collate: batch must contain tensors, numpy arrays, '
-                    f'numbers, dicts or lists; found {elem.dtype}'
-                )
+                raise TypeError(f'batch must be tensors, numpy arrays, numbers, dicts or lists; found {elem.dtype}')
 
             return to_tf_tensor([tf.convert_to_tensor(b) for b in batch])
 
@@ -58,48 +55,4 @@ def to_tf_tensor(batch):
     if isinstance(elem, collections.abc.Sequence):
         return tf.convert_to_tensor(batch)
 
-    raise TypeError(f'collate: batch must contain tensors, numpy arrays, numbers, dicts or lists; found {elem_type}')
-
-
-def to_np_array(batch):
-    """puts each data field into a tensor with outer dimension batch size
-
-        Examples:
-            >>> to_np_array([10, 20])
-            array([10, 20])
-        """
-    elem = batch[0]
-    elem_type = type(elem)
-
-    if elem_type.__module__ == 'numpy' and elem_type.__name__ != 'str_' and elem_type.__name__ != 'string_':
-        if elem_type.__name__ == 'ndarray' or elem_type.__name__ == 'memmap':
-            if _np_str_obj_array_pattern.search(elem.dtype.str) is not None:
-                raise TypeError(
-                    f'default_collate: batch must contain tensors, numpy arrays, '
-                    f'numbers, dicts or lists; found {elem.dtype}'
-                )
-
-            return batch
-
-        if elem.shape == ():  # scalars
-            return np.asarray(batch)
-
-    if isinstance(elem, float):
-        return np.asarray(batch, dtype=np.float32)
-
-    if isinstance(elem, int):
-        return np.asarray(batch, dtype=int)
-
-    if isinstance(elem, (str, bytes)):
-        return batch
-
-    if isinstance(elem, collections.abc.Mapping):
-        return {key: to_np_array([d[key] for d in batch]) for key in elem}
-
-    if isinstance(elem, tuple):
-        return elem_type(to_np_array(samples) for samples in zip(*batch))
-
-    if isinstance(elem, collections.abc.Sequence):
-        return np.asarray(batch)
-
-    raise TypeError(f'collate: batch must contain numbers, dicts or lists; found {elem_type}')
+    raise TypeError(f'batch must be tensors, numpy arrays, numbers, dicts or lists; found {elem.dtype}')
