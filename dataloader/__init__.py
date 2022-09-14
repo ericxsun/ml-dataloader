@@ -6,24 +6,16 @@ import logging
 import os
 import sys
 
-logging_level_registry = {
-    'CRITICAL': logging.CRITICAL,
-    'ERROR': logging.ERROR,
-    'WARNING': logging.WARNING,
-    'INFO': logging.INFO,
-    'DEBUG': logging.DEBUG,
-    None: logging.CRITICAL
-}
 
-LOG_FMT = '[%(levelname)1.1s %(asctime)s.%(msecs)03d %(module)s:%(lineno)d] %(message)s'
+LOG_FMT = '[%(levelname)1.1s %(asctime)s %(module)s:%(lineno)d] %(message)s'
 
-logging_level = logging_level_registry[os.getenv('DL_LOGGING_LEVEL')]
+logging.getLogger('tensorflow').setLevel(os.getenv('LOG_TF', 'ERROR'))
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging_level)
+logger.setLevel(os.getenv('LOG_DL', 'CRITICAL'))
 logger.propagate = False
 
-formatter = logging.Formatter(LOG_FMT)
+formatter = logging.Formatter(LOG_FMT, datefmt='%Y-%m-%d,%H:%M:%S')
 
 handler = logging.StreamHandler(sys.stdout)
 handler.setLevel(logging.DEBUG)
