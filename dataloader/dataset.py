@@ -4,7 +4,7 @@
 
 from abc import ABC
 import bisect
-from typing import Callable
+from collections import Callable
 from typing import Generic
 from typing import Iterable
 from typing import Iterator
@@ -14,7 +14,7 @@ from typing import TypeVar
 
 from dataloader.raw_dataset import RawDataset
 from dataloader.transform import apply_transform
-from dataloader.util.data_kind import DataKind
+from dataloader.util.kind import DataKind
 
 __all__ = ['Dataset', 'IterableDataset', 'BaseDataset', 'ChainDataset', 'ConcatDataset']
 

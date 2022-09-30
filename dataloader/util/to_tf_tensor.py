@@ -6,7 +6,6 @@ import collections
 import re
 
 import numpy as np
-import tensorflow as tf
 
 _np_str_obj_array_pattern = re.compile(r'[SaUO]')
 
@@ -18,6 +17,8 @@ def to_tf_tensor(batch):
         >>> to_tf_tensor([10, 20])
         <tf.Tensor: shape=(2,), dtype=int32, numpy=array([10, 20], dtype=int32)>
     """
+    import tensorflow as tf
+
     elem = batch[0]
     elem_type = type(elem)
 

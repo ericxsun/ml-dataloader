@@ -30,10 +30,9 @@ from dataloader.sampler import RandomSampler
 from dataloader.sampler import Sampler
 from dataloader.sampler import SequentialSampler
 from dataloader.util import signal_handling
-from dataloader.util import to_tensor
 from dataloader.util import worker
 from dataloader.util.batch import RepeatInBatch
-from dataloader.util.dataset_kind import DatasetKind
+from dataloader.util.kind import DatasetKind
 from dataloader.util.misc import ExceptionWrapper
 from dataloader.util.misc import set_rnd
 
@@ -106,9 +105,6 @@ class _BaseDataLoader(Generic[T_co]):
         self.drop_last = drop_last
         self.sampler = sampler
         self.batch_sampler = batch_sampler
-
-        if fn_to_tensor is None:
-            fn_to_tensor = to_tensor.to_tf_tensor
 
         self.fn_to_tensor = fn_to_tensor
         self.persistent_workers = persistent_workers
@@ -509,10 +505,11 @@ class _MultiProcessingDataLoaderIter(_BaseDataLoaderIter):
 
 
 class DataLoader(_BaseDataLoader):
-    def __init__(self, dataset: Dataset, num_workers: int = 0, background_generator=False, **kwargs):
+    def __init__(self, dataset: Dataset, fn_to_tensor, num_workers: int = 0, background_generator=False, **kwargs):
         """
         Args:
             dataset:
+            fn_to_tensor:
             num_workers:
             background_generator: with BackgroundGenerator (default no)
             kwargs:
@@ -527,9 +524,6 @@ class DataLoader(_BaseDataLoader):
         if num_workers == 0:
             seed = tf.random.uniform((1, 1), 0, np.iinfo(np.int32).max, tf.int32).numpy()[0][0]
             set_rnd(dataset, int(seed))
-
-        if 'fn_to_tensor' not in kwargs:
-            kwargs.update({"fn_to_tensor": to_tensor.to_tf_tensor})
 
         if 'fn_worker_init' not in kwargs:
             kwargs.update({'fn_worker_init': self.worker_init_fn})

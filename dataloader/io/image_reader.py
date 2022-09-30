@@ -9,8 +9,8 @@ from typing import Union
 import numpy as np
 
 from dataloader.io.reader import Reader
-from dataloader.util.misc import to_tuple
 from dataloader.io.registry import register_reader
+from dataloader.util.misc import to_tuple
 
 
 @register_reader('reader_image_cv2')

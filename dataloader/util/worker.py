@@ -9,7 +9,7 @@ import random
 
 from dataloader import logger
 from dataloader.util import MP_STATUS_CHECK_INTERVAL
-from dataloader.util.dataset_kind import DatasetKind
+from dataloader.util.kind import DatasetKind
 from dataloader.util.misc import ExceptionWrapper
 
 

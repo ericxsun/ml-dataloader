@@ -2,8 +2,16 @@
 # -*- coding: utf-8 -*-
 #
 
+from enum import Enum
+
 from dataloader.util.fetcher import IterableDatasetFetcher
 from dataloader.util.fetcher import MapDatasetFetcher
+
+
+class DataKind(Enum):
+    FILE = 'file'  # filename
+    MMAP_FILE = 'mmap_file'  # mmap file
+    MEM_SEQ = 'mem_seq'  # data list in memory
 
 
 class DatasetKind:

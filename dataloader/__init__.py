@@ -6,7 +6,6 @@ import logging
 import os
 import sys
 
-
 LOG_FMT = '[%(levelname)1.1s %(asctime)s %(module)s:%(lineno)d] %(message)s'
 
 logging.getLogger('tensorflow').setLevel(os.getenv('LOG_TF', 'ERROR'))

@@ -11,14 +11,12 @@ import multiprocess as multiprocessing
 
 from dataloader import logger
 from dataloader.transform import apply_transform
-from dataloader.util.data_kind import DataKind
+from dataloader.util.kind import DataKind
 from dataloader.util.misc import bytes_to_str
 from dataloader.util.misc import get_offset
 
 
 class RawDataset:
-    data_kinds = {DataKind.FILE, DataKind.MMAP_FILE, DataKind.MEM_SEQ}
-
     def __init__(self, data, kind=DataKind.MEM_SEQ, transform: Optional[Callable] = None):
         """
 
@@ -39,8 +37,6 @@ class RawDataset:
         """
 
         self.kind = kind
-        if kind not in self.data_kinds:
-            raise ValueError(f'not supported data kind: {kind}, choose one from [{",".join(self.data_kinds)}]')
 
         self.offset = []
         self.n_data = 0

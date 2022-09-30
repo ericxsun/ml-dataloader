@@ -17,7 +17,7 @@ long_description = '''
 **ml-dataloader** is an **efficient** and **flexible** data loading pipeline for deep learning, written in pure Python.
 '''
 
-__version__ = '0.6.1'
+__version__ = '0.7.0'
 
 
 setup(

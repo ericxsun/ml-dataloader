@@ -7,7 +7,7 @@ from copy import copy
 from dataloader.pipeline.datapipe import RandomDataPipe
 from dataloader.raw_dataset import RawDataset
 from dataloader.util import get_rng
-from dataloader.util.data_kind import DataKind
+from dataloader.util.kind import DataKind
 
 __all__ = ['Dataset', 'shuffle_dataset']
 

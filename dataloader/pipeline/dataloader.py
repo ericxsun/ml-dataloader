@@ -24,7 +24,7 @@ class DataLoader:
         self, dataset: Dataset, batch_size, shuffle=False, drop_last=False,
         repeat_in_batch_kind='no', repeat_in_batch_time=0,
         transform: Optional[Callable] = None,
-        to_tensor_func: Optional[Callable] = None,
+        fn_to_tensor: Optional[Callable] = None,
         processor_kind: MapDataProcessKind = MapDataProcessKind.NORMAL,
         num_threads=20, num_procs=20, buffer_size=10,
         runner_num_procs=1
@@ -44,7 +44,7 @@ class DataLoader:
             buffer_size: buffer size used in MultiThread/MultiProcess
             runner_num_procs: num processes to run the process in MultiProcessRunner
             transform: callable for transforming raw data to features
-            to_tensor_func: callable for mapping features to tensor, default to_tf_tensor (@see to_tensor.to_tf_tensor)
+            fn_to_tensor: callable for mapping features to tensor, default to_tf_tensor (@see to_tensor.to_tf_tensor)
         """
         dataset = shuffle_dataset(dataset, shuffle)
 
@@ -71,7 +71,7 @@ class DataLoader:
         dataset = MultiProcessRunnerZMQ(dataset, num_procs=runner_num_procs)
 
         repeat_in_batch = RepeatInBatch(repeat_in_batch_kind, repeat_in_batch_time)
-        dataset = Batch(dataset, batch_size, drop_last, repeat_in_batch, to_tensor_func)
+        dataset = Batch(dataset, batch_size, drop_last, repeat_in_batch, fn_to_tensor)
 
         self.dataset = dataset
         self.dataset.reset()

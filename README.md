@@ -15,12 +15,13 @@
 ```python
 from dataloader.dataset import Dataset
 from dataloader.dataloader import DataLoader
-from dataloader.util.data_kind import DataKind
+from dataloader.util.kind import DataKind
+from dataloader.util.to_tf_tensor import to_tf_tensor # or to_pt_tensor
 
 data = list(range(10))
 dataset = Dataset(data, kind=DataKind.MEM_SEQ)
 
-dl = DataLoader(dataset, batch_size=2, shuffle=False)
+dl = DataLoader(dataset, batch_size=2, shuffle=False, fn_to_tensor=to_tf_tensor)
 for batch in dl:
     print(batch)
 
@@ -36,12 +37,13 @@ for batch in dl:
 ```python
 from dataloader.dataset import Dataset
 from dataloader.dataloader import DataLoader
-from dataloader.util.data_kind import DataKind
+from dataloader.util.kind import DataKind
+from dataloader.util.to_tf_tensor import to_tf_tensor
 
 filename = 'train.tsv'
 dataset = Dataset(filename, kind=DataKind.FILE)
 
-dl = DataLoader(dataset, batch_size=2, shuffle=True)
+dl = DataLoader(dataset, batch_size=2, shuffle=True, fn_to_tensor=to_tf_tensor)
 for batch in dl:
     print(batch)
 ```
@@ -51,13 +53,15 @@ for batch in dl:
 ```python
 from dataloader.dataset import Dataset
 from dataloader.dataloader import DataLoader
-from dataloader.util.data_kind import DataKind
+from dataloader.util.kind import DataKind
+from dataloader.util.to_tf_tensor import to_tf_tensor
+
 
 filename = 'train.tsv'
 
 dataset = Dataset(filename, kind=DataKind.MMAP_FILE)
 
-dl = DataLoader(dataset, batch_size=2, shuffle=True)
+dl = DataLoader(dataset, batch_size=2, shuffle=True, fn_to_tensor=to_tf_tensor)
 for batch in dl:
     print(batch)
 ```
@@ -75,12 +79,14 @@ for batch in dl:
 from dataloader.pipeline.dataset import Dataset
 from dataloader.pipeline.dataloader import DataLoader
 from dataloader.pipeline.processor import MapDataProcessKind
-from dataloader.util.data_kind import DataKind
+from dataloader.util.kind import DataKind
+from dataloader.util.to_tf_tensor import to_tf_tensor
+
 
 data = list(range(10))
 dataset = Dataset(data, kind=DataKind.MEM_SEQ)
 
-dl = DataLoader(dataset, batch_size=2, shuffle=False, processor_kind=MapDataProcessKind.NORMAL)
+dl = DataLoader(dataset, batch_size=2, shuffle=False, processor_kind=MapDataProcessKind.NORMAL, fn_to_tensor=to_tf_tensor)
 for batch in dl:
     print(batch)
 
@@ -97,12 +103,13 @@ for batch in dl:
 from dataloader.pipeline.dataset import Dataset
 from dataloader.pipeline.dataloader import DataLoader
 from dataloader.pipeline.processor import MapDataProcessKind
-from dataloader.util.data_kind import DataKind
+from dataloader.util.kind import DataKind
+from dataloader.util.to_tf_tensor import to_tf_tensor
 
 filename = 'train.tsv'
 dataset = Dataset(filename, kind=DataKind.FILE)
 
-dl = DataLoader(dataset, batch_size=2, shuffle=True, processor_kind=MapDataProcessKind.MULTI_PROCESS, num_procs=20)
+dl = DataLoader(dataset, batch_size=2, shuffle=True, processor_kind=MapDataProcessKind.MULTI_PROCESS, num_procs=20, fn_to_tensor=to_tf_tensor)
 for batch in dl:
     print(batch)
 ```
@@ -113,13 +120,14 @@ for batch in dl:
 from dataloader.pipeline.dataset import Dataset
 from dataloader.pipeline.dataloader import DataLoader
 from dataloader.pipeline.processor import MapDataProcessKind
-from dataloader.util.data_kind import DataKind
+from dataloader.util.kind import DataKind
+from dataloader.util.to_tf_tensor import to_tf_tensor
 
 filename = 'train.tsv'
 
 dataset = Dataset(filename, kind=DataKind.MMAP_FILE)
 
-dl = DataLoader(dataset, batch_size=2, shuffle=True, processor_kind=MapDataProcessKind.MULTI_PROCESS, num_procs=20)
+dl = DataLoader(dataset, batch_size=2, shuffle=True, processor_kind=MapDataProcessKind.MULTI_PROCESS, num_procs=20, fn_to_tensor=to_tf_tensor)
 for batch in dl:
     print(batch)
 ```
