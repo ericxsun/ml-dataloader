@@ -537,7 +537,7 @@ class DataLoader(_BaseDataLoader):
 
         self.background_generator = background_generator
 
-        super().__init__(dataset=dataset, num_workers=num_workers, **kwargs)
+        super().__init__(dataset=dataset, fn_to_tensor=fn_to_tensor, num_workers=num_workers, **kwargs)
 
     @staticmethod
     def worker_init_fn(worker_id: int) -> None:
